@@ -1,0 +1,125 @@
+/* assets/styles.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #f5f7fa;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* --- HEADER --- */
+.header {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.logo-section { display: flex; align-items: center; gap: 12px; }
+.logo { font-size: 32px; }
+.title { font-size: 28px; font-weight: 300; color: #2c3e50; letter-spacing: -0.5px; }
+
+.status-indicator {
+    display: flex; align-items: center; gap: 10px; padding: 10px 20px;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white; border-radius: 25px; font-size: 14px; font-weight: 600;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.status-dot {
+    width: 10px; height: 10px; background: white; border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* --- METRICS GRID --- */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.metric-card {
+    background: white; padding: 25px; border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease; border-left: 4px solid transparent;
+}
+.metric-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+
+.metric-card.grid-import { border-left-color: #3498db; }
+.metric-card.solar-gen { border-left-color: #f39c12; }
+.metric-card.bill { border-left-color: #27ae60; }
+.metric-card.waste { border-left-color: #e74c3c; }
+
+.metric-label { font-size: 13px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-weight: 600; }
+.metric-value { font-size: 32px; font-weight: 300; color: #2c3e50; display: flex; align-items: baseline; gap: 8px; }
+.metric-unit { font-size: 18px; color: #95a5a6; font-weight: 400; }
+.metric-subtext { margin-top: 10px; font-size: 13px; display: flex; align-items: center; gap: 6px; color: #7f8c8d; }
+
+/* --- CHARTS & LAYOUT --- */
+.main-content {
+    display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px;
+}
+
+.chart-card {
+    background: white; padding: 25px; border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    height: 100%;
+}
+
+.chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.chart-title { font-size: 18px; font-weight: 600; color: #2c3e50; }
+
+/* --- CUSTOM HTML BARS (Energy Breakdown) --- */
+.breakdown-bars { display: flex; flex-direction: column; gap: 15px; }
+.breakdown-item { display: flex; align-items: center; gap: 12px; }
+.breakdown-label { min-width: 80px; font-size: 13px; color: #7f8c8d; font-weight: 500; }
+.breakdown-bar-container { flex: 1; height: 35px; background: #ecf0f1; border-radius: 6px; overflow: hidden; }
+.breakdown-bar {
+    height: 100%; border-radius: 6px; display: flex; align-items: center;
+    justify-content: flex-end; padding-right: 12px; color: white;
+    font-weight: 600; font-size: 12px; transition: width 1s ease;
+}
+.bar-gradient-1 { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); }
+.bar-gradient-2 { background: linear-gradient(135deg, #2980b9 0%, #3498db 100%); }
+.bar-gradient-3 { background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%); }
+
+/* --- PLANNER SPECIFIC --- */
+.section-heading {
+    font-size: 20px; font-weight: 300; color: #2c3e50; 
+    margin: 40px 0 20px 0; border-bottom: 2px solid #e9ecef; padding-bottom: 10px;
+}
+
+.kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+
+#table-backlog tr.table-active {
+    background-color: rgba(13, 110, 253, 0.12); /* Bootstrap primary tint */
+}
+#table-backlog tr.table-active input,
+#table-backlog tr.table-active select {
+    border-color: #0d6efd;
+}
+
+/* Responsive */
+@media (max-width: 1200px) { .main-content, .kpi-row { grid-template-columns: 1fr; } }

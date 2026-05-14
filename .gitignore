@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+EnergyEnv/
+
+# DuckDB – rebuilt from CSVs at deploy time, never commit the binary
+data/energy.duckdb
+*.duckdb
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Secrets / env files
+.env
+.env.*

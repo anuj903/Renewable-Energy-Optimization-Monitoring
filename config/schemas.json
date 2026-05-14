@@ -1,0 +1,662 @@
+{
+    "foundry_daily_production_plan_verified": {
+        "description": "Data loaded from Foundry_Daily_Production_Plan_Verified.csv",
+        "columns": [
+            {
+                "name": "Date",
+                "type": "DATE",
+                "context": ""
+            },
+            {
+                "name": "Line_ID",
+                "type": "VARCHAR",
+                "context": "Categories: ['Line_1', 'Line_3', 'Line_2']"
+            },
+            {
+                "name": "Status",
+                "type": "VARCHAR",
+                "context": "Categories: ['Maintenance_Weekly', 'Production']"
+            },
+            {
+                "name": "Part_Produced",
+                "type": "VARCHAR",
+                "context": "Categories: ['Cylinder Head', 'Engine Block', 'Cylinder Liner', 'Camshaft Pulley', 'Oil Pan', 'None']"
+            },
+            {
+                "name": "Target_Batches",
+                "type": "BIGINT",
+                "context": "Range: 0 to 9"
+            },
+            {
+                "name": "Target_Qty",
+                "type": "BIGINT",
+                "context": "Range: 0 to 5997"
+            }
+        ]
+    },
+    "foundry_main_meter_15min_2024": {
+        "description": "Data loaded from Foundry_Main_Meter_15min_2024.csv",
+        "columns": [
+            {
+                "name": "Timestamp",
+                "type": "TIMESTAMP",
+                "context": ""
+            },
+            {
+                "name": "Total_Foundry_Load_KW",
+                "type": "DOUBLE",
+                "context": "Range: 300 to 7554"
+            },
+            {
+                "name": "Solar_Gen_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 21186"
+            },
+            {
+                "name": "Solar_Consumed_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 7554"
+            },
+            {
+                "name": "Grid_Draw_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 7499"
+            },
+            {
+                "name": "Solar_Wasted_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 20503"
+            },
+            {
+                "name": "Solar_Fraction",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 1"
+            }
+        ]
+    },
+    "foundry_weather_solar_2024": {
+        "description": "Data loaded from Foundry_Weather_Solar_2024.csv",
+        "columns": [
+            {
+                "name": "date",
+                "type": "TIMESTAMP",
+                "context": ""
+            },
+            {
+                "name": "Temperature_C",
+                "type": "DOUBLE",
+                "context": "Range: 14 to 40"
+            },
+            {
+                "name": "Cloud_Cover_Pct",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 100"
+            },
+            {
+                "name": "Solar_Irradiance_W_m2",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 997"
+            },
+            {
+                "name": "Direct_Normal_Irradiance_W_m2",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 944"
+            },
+            {
+                "name": "Solar_Generation_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 24925"
+            }
+        ]
+    },
+    "intermittent_job_specs": {
+        "description": "Data loaded from Intermittent_Job_Specs.csv",
+        "columns": [
+            {
+                "name": "Job_Type",
+                "type": "VARCHAR",
+                "context": ""
+            },
+            {
+                "name": "Unit_Power_KW",
+                "type": "BIGINT",
+                "context": "Range: 20 to 350"
+            },
+            {
+                "name": "Unit_Duration_Mins",
+                "type": "BIGINT",
+                "context": "Range: 15 to 240"
+            },
+            {
+                "name": "Constraint",
+                "type": "VARCHAR",
+                "context": ""
+            }
+        ]
+    },
+    "line_1_consumption_2024": {
+        "description": "Data loaded from Line_1_Consumption_2024.csv",
+        "columns": [
+            {
+                "name": "Timestamp",
+                "type": "TIMESTAMP",
+                "context": ""
+            },
+            {
+                "name": "Line_ID",
+                "type": "VARCHAR",
+                "context": "Categories: ['Line_1']"
+            },
+            {
+                "name": "Part_Produced",
+                "type": "VARCHAR",
+                "context": "Categories: ['Engine Block', None]"
+            },
+            {
+                "name": "Batch_ID",
+                "type": "VARCHAR",
+                "context": ""
+            },
+            {
+                "name": "Melting_KW",
+                "type": "DOUBLE",
+                "context": "Range: 100 to 2199"
+            },
+            {
+                "name": "Melting_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Core_Making_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 150"
+            },
+            {
+                "name": "Core_Making_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Moulding_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 400"
+            },
+            {
+                "name": "Moulding_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Ladle_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 79"
+            },
+            {
+                "name": "Ladle_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Processing_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 219"
+            },
+            {
+                "name": "Processing_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Total_Line_KW",
+                "type": "DOUBLE",
+                "context": "Range: 100 to 2952"
+            },
+            {
+                "name": "Energy_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 25 to 738"
+            },
+            {
+                "name": "Meter_Reading_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 663 to 9997817"
+            },
+            {
+                "name": "Melting_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 25 to 550"
+            },
+            {
+                "name": "Core_Making_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 37"
+            },
+            {
+                "name": "Moulding_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 100"
+            },
+            {
+                "name": "Ladle_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 19"
+            },
+            {
+                "name": "Processing_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 55"
+            },
+            {
+                "name": "Total_Line_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 25 to 738"
+            }
+        ]
+    },
+    "line_1_daily_consumption_2024": {
+        "description": "Data loaded from Line_1_Daily_Consumption_2024.csv",
+        "columns": [
+            {
+                "name": "Line_ID",
+                "type": "VARCHAR",
+                "context": "Categories: ['Line_1']"
+            },
+            {
+                "name": "Date",
+                "type": "DATE",
+                "context": ""
+            },
+            {
+                "name": "Melting_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 2400 to 26573"
+            },
+            {
+                "name": "Core_Making_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 2126"
+            },
+            {
+                "name": "Moulding_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 7550"
+            },
+            {
+                "name": "Ladle_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 141"
+            },
+            {
+                "name": "Processing_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 1634"
+            },
+            {
+                "name": "Total_Line_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 2400 to 37866"
+            },
+            {
+                "name": "Solar_Used_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 1190 to 16246"
+            },
+            {
+                "name": "Grid_Used_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 1054 to 22878"
+            }
+        ]
+    },
+    "line_2_consumption_2024": {
+        "description": "Data loaded from Line_2_Consumption_2024.csv",
+        "columns": [
+            {
+                "name": "Timestamp",
+                "type": "TIMESTAMP",
+                "context": ""
+            },
+            {
+                "name": "Line_ID",
+                "type": "VARCHAR",
+                "context": "Categories: ['Line_2']"
+            },
+            {
+                "name": "Part_Produced",
+                "type": "VARCHAR",
+                "context": "Categories: ['Cylinder Head', 'Oil Pan', None]"
+            },
+            {
+                "name": "Batch_ID",
+                "type": "VARCHAR",
+                "context": ""
+            },
+            {
+                "name": "Melting_KW",
+                "type": "DOUBLE",
+                "context": "Range: 100 to 1999"
+            },
+            {
+                "name": "Melting_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Core_Making_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 100"
+            },
+            {
+                "name": "Core_Making_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Moulding_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 350"
+            },
+            {
+                "name": "Moulding_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Ladle_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 79"
+            },
+            {
+                "name": "Ladle_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Processing_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 180"
+            },
+            {
+                "name": "Processing_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Total_Line_KW",
+                "type": "DOUBLE",
+                "context": "Range: 100 to 2676"
+            },
+            {
+                "name": "Energy_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 25 to 669"
+            },
+            {
+                "name": "Meter_Reading_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 585 to 12034351"
+            },
+            {
+                "name": "Melting_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 25 to 500"
+            },
+            {
+                "name": "Core_Making_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 25"
+            },
+            {
+                "name": "Moulding_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 87"
+            },
+            {
+                "name": "Ladle_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 19"
+            },
+            {
+                "name": "Processing_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 45"
+            },
+            {
+                "name": "Total_Line_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 25 to 669"
+            }
+        ]
+    },
+    "line_2_daily_consumption_2024": {
+        "description": "Data loaded from Line_2_Daily_Consumption_2024.csv",
+        "columns": [
+            {
+                "name": "Line_ID",
+                "type": "VARCHAR",
+                "context": "Categories: ['Line_2']"
+            },
+            {
+                "name": "Date",
+                "type": "DATE",
+                "context": ""
+            },
+            {
+                "name": "Melting_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 2400 to 34815"
+            },
+            {
+                "name": "Core_Making_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 1583"
+            },
+            {
+                "name": "Moulding_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 7253"
+            },
+            {
+                "name": "Ladle_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 261"
+            },
+            {
+                "name": "Processing_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 1602"
+            },
+            {
+                "name": "Total_Line_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 2400 to 44736"
+            },
+            {
+                "name": "Solar_Used_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 1190 to 21693"
+            },
+            {
+                "name": "Grid_Used_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 1054 to 26106"
+            }
+        ]
+    },
+    "line_3_consumption_2024": {
+        "description": "Data loaded from Line_3_Consumption_2024.csv",
+        "columns": [
+            {
+                "name": "Timestamp",
+                "type": "TIMESTAMP",
+                "context": ""
+            },
+            {
+                "name": "Line_ID",
+                "type": "VARCHAR",
+                "context": "Categories: ['Line_3']"
+            },
+            {
+                "name": "Part_Produced",
+                "type": "VARCHAR",
+                "context": "Categories: [None, 'Cylinder Liner', 'Camshaft Pulley']"
+            },
+            {
+                "name": "Batch_ID",
+                "type": "VARCHAR",
+                "context": ""
+            },
+            {
+                "name": "Melting_KW",
+                "type": "DOUBLE",
+                "context": "Range: 100 to 1799"
+            },
+            {
+                "name": "Melting_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Core_Making_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 50"
+            },
+            {
+                "name": "Core_Making_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 1"
+            },
+            {
+                "name": "Moulding_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 250"
+            },
+            {
+                "name": "Moulding_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Ladle_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 59"
+            },
+            {
+                "name": "Ladle_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Processing_KW",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 150"
+            },
+            {
+                "name": "Processing_PF",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 0"
+            },
+            {
+                "name": "Total_Line_KW",
+                "type": "DOUBLE",
+                "context": "Range: 100 to 2097"
+            },
+            {
+                "name": "Energy_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 25 to 524"
+            },
+            {
+                "name": "Meter_Reading_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 516 to 7023945"
+            },
+            {
+                "name": "Melting_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 25 to 450"
+            },
+            {
+                "name": "Core_Making_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 12"
+            },
+            {
+                "name": "Moulding_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 62"
+            },
+            {
+                "name": "Ladle_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 15"
+            },
+            {
+                "name": "Processing_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 37"
+            },
+            {
+                "name": "Total_Line_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 25 to 524"
+            }
+        ]
+    },
+    "line_3_daily_consumption_2024": {
+        "description": "Data loaded from Line_3_Daily_Consumption_2024.csv",
+        "columns": [
+            {
+                "name": "Line_ID",
+                "type": "VARCHAR",
+                "context": "Categories: ['Line_3']"
+            },
+            {
+                "name": "Date",
+                "type": "DATE",
+                "context": ""
+            },
+            {
+                "name": "Melting_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 2400 to 19029"
+            },
+            {
+                "name": "Core_Making_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 482"
+            },
+            {
+                "name": "Moulding_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 5123"
+            },
+            {
+                "name": "Ladle_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 154"
+            },
+            {
+                "name": "Processing_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 0 to 745"
+            },
+            {
+                "name": "Total_Line_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 2400 to 25417"
+            },
+            {
+                "name": "Solar_Used_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 1190 to 11776"
+            },
+            {
+                "name": "Grid_Used_kWh",
+                "type": "DOUBLE",
+                "context": "Range: 1054 to 14985"
+            }
+        ]
+    }
+}

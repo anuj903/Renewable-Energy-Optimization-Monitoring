@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: ecofoundry-dashboard
+    env: python
+    buildCommand: pip install -r requirements.txt && python -m utils.bootstrap_duckdb
+    startCommand: gunicorn web:app --workers 1 --bind 0.0.0.0:$PORT --timeout 120
+    envVars:
+      # ── Required ────────────────────────────────────────────────────────────
+      - key: GEMINI_API_KEY
+        sync: false          # set this manually in the Render dashboard
+
+      # ── Optional overrides (defaults match the demo dataset) ─────────────
+      - key: DASHBOARD_DATE
+        value: "2024-12-16"  # date the live simulation runs against
+
+      - key: PLANNER_DATE
+        value: "2024-12-17"  # forecast target date for the AI planner
+
+      # DUCKDB_PATH is not set here — the default "data/energy.duckdb"
+      # (relative to the app directory) is created by the build command above.

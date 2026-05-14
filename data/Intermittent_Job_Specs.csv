@@ -1,0 +1,15 @@
+Job_Type,Unit_Power_KW,Unit_Duration_Mins,Constraint
+EV_Forklift_Charge,20,60,Day_Only
+EV_Truck_Charge_Fast,120,60,Day_Only
+Scrap_Baling_Machine,150,45,Day_Only
+Ladle_PreHeat_Station,50,30,Any
+Compressor_Fill_Run,200,15,Any
+Water_Pump_Run,75,120,Any
+Furnace_Holding_Boost,300,60,Night_Preferred
+Sand_Reclamation_Plant,350,90,Any
+Shot_Blasting_Tumbler,120,45,Day_Only
+Heat_Treat_Quench,200,30,Any
+Fettling_Robot_Cluster,80,120,Day_Only
+Cooling_Tunnel_Fans,45,240,Day_Only
+Compressed_Air_Purge,180,15,Any
+Die_Cleaning_Station,30,60,Any

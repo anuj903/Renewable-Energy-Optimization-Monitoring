@@ -1,0 +1,16 @@
+[
+  {"Job_Type": "EV_Forklift_Charge",       "Unit_Power_KW": 20,  "Unit_Duration_Mins": 60,  "Constraint": "Day_Only"},
+  {"Job_Type": "EV_Truck_Charge_Fast",     "Unit_Power_KW": 120, "Unit_Duration_Mins": 60,  "Constraint": "Day_Only"},
+  {"Job_Type": "Scrap_Baling_Machine",     "Unit_Power_KW": 150, "Unit_Duration_Mins": 45,  "Constraint": "Day_Only"},
+  {"Job_Type": "Ladle_PreHeat_Station",    "Unit_Power_KW": 50,  "Unit_Duration_Mins": 30,  "Constraint": "Any"},
+  {"Job_Type": "Compressor_Fill_Run",      "Unit_Power_KW": 200, "Unit_Duration_Mins": 15,  "Constraint": "Any"},
+  {"Job_Type": "Water_Pump_Run",           "Unit_Power_KW": 75,  "Unit_Duration_Mins": 120, "Constraint": "Any"},
+  {"Job_Type": "Furnace_Holding_Boost",    "Unit_Power_KW": 300, "Unit_Duration_Mins": 60,  "Constraint": "Night_Preferred"},
+  {"Job_Type": "Sand_Reclamation_Plant",   "Unit_Power_KW": 350, "Unit_Duration_Mins": 90,  "Constraint": "Any"},
+  {"Job_Type": "Shot_Blasting_Tumbler",    "Unit_Power_KW": 120, "Unit_Duration_Mins": 45,  "Constraint": "Day_Only"},
+  {"Job_Type": "Heat_Treat_Quench",        "Unit_Power_KW": 200, "Unit_Duration_Mins": 30,  "Constraint": "Any"},
+  {"Job_Type": "Fettling_Robot_Cluster",   "Unit_Power_KW": 80,  "Unit_Duration_Mins": 120, "Constraint": "Day_Only"},
+  {"Job_Type": "Cooling_Tunnel_Fans",      "Unit_Power_KW": 45,  "Unit_Duration_Mins": 240, "Constraint": "Day_Only"},
+  {"Job_Type": "Compressed_Air_Purge",     "Unit_Power_KW": 180, "Unit_Duration_Mins": 15,  "Constraint": "Any"},
+  {"Job_Type": "Die_Cleaning_Station",     "Unit_Power_KW": 30,  "Unit_Duration_Mins": 60,  "Constraint": "Any"}
+]

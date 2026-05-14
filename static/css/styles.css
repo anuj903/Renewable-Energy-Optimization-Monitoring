@@ -1,0 +1,22 @@
+/* Minimal CSS placeholders for the Flask HTML views.
+ * The Dash app may already have an `assets/styles.css`; this file can be
+ * extended or replaced to more closely mirror that design.
+ */
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.card-header strong {
+    font-size: 0.95rem;
+}
+
+/* Backlog table: highlight selected row */
+#table-backlog tr.table-active {
+    background-color: rgba(13, 110, 253, 0.12);
+}
+#table-backlog tr.table-active input,
+#table-backlog tr.table-active select {
+    border-color: #0d6efd;
+}
+

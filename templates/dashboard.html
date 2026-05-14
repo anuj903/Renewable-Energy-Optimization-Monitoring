@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>EcoFoundry 6.0 – Operations Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap for grid + components -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
+
+    <!-- Optional: reuse any existing app-level styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <!-- Header -->
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-center gap-2">
+                <div class="fs-2">🏭</div>
+                <div>
+                    <h1 class="h3 mb-0">EcoFoundry 6.0</h1>
+                    <small class="text-muted">Live Operations Dashboard</small>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="#" id="btn-open-planner" class="btn btn-outline-secondary btn-sm">
+                    AI Planner
+                </a>
+                <span class="badge bg-success rounded-pill">Live</span>
+                <small id="live-clock" class="text-muted"></small>
+            </div>
+        </header>
+
+        <!-- KPI grid -->
+        <section class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Grid Import</div>
+                        <div class="fs-4">
+                            <span id="kpi-grid">–</span>
+                            <span class="text-muted fs-6">kWh</span>
+                        </div>
+                        <div class="small text-success">↓ 12% vs yesterday</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Solar Generation</div>
+                        <div class="fs-4">
+                            <span id="kpi-solar">–</span>
+                            <span class="text-muted fs-6">kWh</span>
+                        </div>
+                        <div class="small text-success">↑ 8% vs yesterday</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Estimated Bill</div>
+                        <div class="fs-4" id="kpi-bill">–</div>
+                        <div class="small text-success">↓ ₹32k saved this month</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="text-muted small">Solar Waste</div>
+                        <div class="fs-4">
+                            <span id="kpi-waste">–</span>
+                            <span class="text-muted fs-6">kWh</span>
+                        </div>
+                        <div class="small text-warning">⚠ High waste detected</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts row 1 -->
+        <section class="row g-3 mb-4">
+            <div class="col-md-8">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <strong>Power Flow – 24 Hour Trend</strong>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart-power-profile" style="height:320px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <strong>Energy Breakdown</strong>
+                    </div>
+                    <div class="card-body">
+                        <div id="breakdown-container"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts row 2 -->
+        <section class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <strong>Daily Energy Consumption (kWh/Part)</strong>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart-daily-consumption" style="height:280px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <strong>Power Source Distribution</strong>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart-distribution" style="height:280px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Planner section (integrated on same page) -->
+        <section id="planner-section" class="mb-4">
+
+            <!-- 0. Planner KPIs -->
+            <div class="row g-3 mb-3">
+                <div class="col-12 col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Predicted Solar (Tomorrow)</div>
+                            <div class="fs-4">
+                                <span id="kpi-pred-solar">–</span>
+                                <span class="text-muted fs-6">kWh</span>
+                            </div>
+                            <div class="small text-warning">Forecast for <span id="kpi-forecast-date">–</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Expected Load (Tomorrow)</div>
+                            <div class="fs-4">
+                                <span id="kpi-pred-load">–</span>
+                                <span class="text-muted fs-6">kWh</span>
+                            </div>
+                            <div class="small text-info">Baseline consumption forecast</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Free Energy Available (Tomorrow)</div>
+                            <div class="fs-4">
+                                <span id="kpi-free-energy">–</span>
+                                <span class="text-muted fs-6">kWh</span>
+                            </div>
+                            <div class="small text-success">Available for scheduling</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1. Expected Power Balance (ML Forecast) -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header">
+                    <strong>Expected Power Balance (ML Forecast)</strong>
+                    <small class="text-muted ms-2">Target date: <span id="planner-date">{{ forecast_date }}</span></small>
+                </div>
+                <div class="card-body">
+                    <div id="chart-forecast" style="height:350px;"></div>
+                </div>
+            </div>
+
+            <!-- 2. Job Backlog -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header">
+                    <strong>Job Backlog</strong>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2 d-flex align-items-end justify-content-between gap-2 flex-wrap">
+                        <div class="flex-grow-1">
+                            <label for="job-type-select" class="form-label small mb-1">Job type</label>
+                            <select id="job-type-select" class="form-select form-select-sm"></select>
+                        </div>
+                        <div>
+                            <button id="btn-add-row" class="btn btn-sm btn-outline-secondary mt-3 mt-sm-0">
+                                + Add Job
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-sm align-middle" id="table-backlog">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 150px;">Job</th>
+                                <th>Qty</th>
+                                <th>Mins</th>
+                                <th>kW</th>
+                                <th>Prio</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Initial rows inserted by JS -->
+                        </tbody>
+                    </table>
+                    <button id="btn-run-schedule" class="btn btn-success w-100 mt-2">
+                        Run AI Scheduler
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. AI Optimized Schedule -->
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <strong>AI Optimized Schedule</strong>
+                </div>
+                <div class="card-body">
+                    <div id="chart-gantt" style="height:300px;"></div>
+                    <div id="ai-insights" class="alert alert-info mt-3 d-none"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-muted small py-3">
+            EcoFoundry 6.0 – HTML/Jinja prototype powered by the shared services layer.
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.7.7/dist/axios.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <script type="application/json" id="job-specs-data">{{ (job_specs or []) | tojson | safe }}</script>
+    <script>
+        // Job specs for intermittent jobs (from backend)
+        const jobSpecs = JSON.parse(document.getElementById('job-specs-data').textContent || '[]');
+        const jobSpecsByType = {};
+        jobSpecs.forEach(j => { jobSpecsByType[j.Job_Type] = j; });
+        const jobTypes = Object.keys(jobSpecsByType);
+
+        // Simulated time over the historical dataset (2024)
+        // Starts at 2024-12-16 17:00 and advances 15 minutes every 15 seconds.
+        let simTime = new Date('2024-12-16T17:00:00');
+
+        // Planner date (target forecast date)
+        let plannerDate = '';
+
+        function updateClock() {
+            const el = document.getElementById('live-clock');
+            if (!el) return;
+            const now = new Date();
+            el.textContent = now.toLocaleString();
+        }
+
+        async function fetchDashboard() {
+            try {
+                const res = await axios.get('/api/dashboard', {
+                    params: { ts: simTime.toISOString() }
+                });
+                const data = res.data || {};
+
+                const m = data.metrics || {};
+                document.getElementById('kpi-grid').textContent = Math.round(m.g || 0).toLocaleString();
+                document.getElementById('kpi-solar').textContent = Math.round(m.s || 0).toLocaleString();
+                document.getElementById('kpi-bill').textContent = '₹ ' + Math.round((m.g || 0) * 8.19).toLocaleString();
+                document.getElementById('kpi-waste').textContent = Math.round(m.w || 0).toLocaleString();
+
+                // Power profile
+                const profile = data.profile || [];
+                const ts = profile.map(r => r.Timestamp || r.timestamp);
+                const solar = profile.map(r => r.Solar || r.solar || 0);
+                const load = profile.map(r => r.Load || r.load || 0);
+
+                const layoutBase = {
+                    margin: {t: 10, b: 40, l: 40, r: 10},
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    xaxis: {showgrid: true, gridcolor: 'rgba(0,0,0,0.05)'},
+                    yaxis: {showgrid: true, gridcolor: 'rgba(0,0,0,0.05)'}
+                };
+
+                Plotly.newPlot('chart-power-profile', [
+                    {x: ts, y: solar, fill: 'tozeroy', type: 'scatter', name: 'Solar', line: {color: '#f39c12'}, fillcolor: 'rgba(243,156,18,0.2)'},
+                    {x: ts, y: load, type: 'scatter', name: 'Load', line: {color: '#2ecc71'}}
+                ], {
+                    ...layoutBase,
+                    xaxis: {...layoutBase.xaxis, type: 'date', tickformat: '%H:%M'},
+                    legend: {orientation: 'h', y: 1.1}
+                }, {displayModeBar: false});
+
+                // Line breakdown bars
+                const lines = data.lines || [];
+                const breakdown = document.getElementById('breakdown-container');
+                breakdown.innerHTML = '';
+                if (lines.length) {
+                    const maxK = Math.max(...lines.map(r => r.kWh || r.kwh || 0), 1);
+                    lines.forEach(r => {
+                        const name = r.Line || r.line;
+                        const val = r.kWh || r.kwh || 0;
+                        const pct = (val / maxK) * 100;
+                        const row = document.createElement('div');
+                        row.className = 'mb-2';
+                        row.innerHTML = `
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span>${name}</span>
+                                <span>${Math.round(val).toLocaleString()} kWh</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: ${pct.toFixed(1)}%;"></div>
+                            </div>
+                        `;
+                        breakdown.appendChild(row);
+                    });
+                } else {
+                    breakdown.textContent = 'No line data available.';
+                }
+
+                // Efficiency bar chart
+                const eff = data.efficiency || [];
+                const effDates = eff.map(r => r.Date || r.date);
+                const effVals = eff.map(r => r.val || 0);
+                Plotly.newPlot('chart-daily-consumption', [{
+                    x: effDates,
+                    y: effVals,
+                    type: 'bar',
+                    marker: {color: '#1abc9c'}
+                }], layoutBase, {displayModeBar: false});
+
+                // Distribution donut
+                const solarUsed = Math.max((m.s || 0) - (m.w || 0), 0);
+                Plotly.newPlot('chart-distribution', [{
+                    values: [m.g || 0, solarUsed, m.w || 0],
+                    labels: ['Grid Import', 'Solar Used', 'Solar Waste'],
+                    type: 'pie',
+                    hole: 0.6,
+                    marker: {colors: ['#bdc3c7', '#27ae60', '#e74c3c']}
+                }], {
+                    margin: {t: 0, b: 0, l: 0, r: 0},
+                    showlegend: true,
+                    legend: {orientation: 'h', y: -0.1},
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    paper_bgcolor: 'rgba(0,0,0,0)'
+                }, {displayModeBar: false});
+
+                // Advance simulation clock by 15 minutes after each successful refresh
+                simTime = new Date(simTime.getTime() + 15 * 60 * 1000);
+            } catch (err) {
+                console.error('Dashboard fetch error', err);
+            }
+        }
+
+        // --- Planner helpers ---
+        function renderBacklog(rows) {
+            const tbody = document.querySelector('#table-backlog tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            rows.forEach((r, idx) => {
+                const tr = document.createElement('tr');
+                const rowId = `backlog-row-${idx}`;
+                tr.innerHTML = `
+                    <td style="min-width: 150px;"><input id="${rowId}-job" name="job" class="form-control form-control-sm" value="${r.Job || ''}" readonly /></td>
+                    <td style="width:70px;"><input id="${rowId}-qty" name="qty" type="number" class="form-control form-control-sm" value="${r.Qty || 1}" /></td>
+                    <td style="width:80px;"><input id="${rowId}-duration" name="duration" type="number" class="form-control form-control-sm" value="${r.Duration_Mins || 30}" readonly /></td>
+                    <td style="width:80px;"><input id="${rowId}-power" name="power" type="number" class="form-control form-control-sm" value="${r.Power_KW || 10}" readonly /></td>
+                    <td style="width:90px;">
+                        <select id="${rowId}-priority" name="priority" class="form-select form-select-sm">
+                            <option value="High" ${r.Priority === 'High' ? 'selected' : ''}>High</option>
+                            <option value="Med" ${r.Priority === 'Med' ? 'selected' : ''}>Med</option>
+                            <option value="Low" ${r.Priority === 'Low' ? 'selected' : ''}>Low</option>
+                        </select>
+                    </td>
+                    <td style="width:40px;">
+                        <button class="btn btn-sm btn-outline-danger" data-row="${idx}">×</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Delete buttons
+            tbody.querySelectorAll('button[data-row]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(e.currentTarget.getAttribute('data-row'), 10);
+                    currentBacklog.splice(idx, 1);
+                    renderBacklog(currentBacklog);
+                    e.stopPropagation();
+                });
+            });
+
+            // Row selection highlight
+            tbody.querySelectorAll('tr').forEach(tr => {
+                tr.addEventListener('click', (e) => {
+                    if (e.target.tagName.toLowerCase() === 'button') return;
+                    tbody.querySelectorAll('tr.table-active').forEach(r => r.classList.remove('table-active'));
+                    tr.classList.add('table-active');
+                });
+            });
+        }
+
+        function collectBacklog() {
+            const rows = [];
+            document.querySelectorAll('#table-backlog tbody tr').forEach(tr => {
+                const [jobEl, qtyEl, durEl, kwEl, prioEl] = tr.querySelectorAll('input, select');
+                rows.push({
+                    Job: jobEl.value || 'New Task',
+                    Qty: parseInt(qtyEl.value || '1', 10),
+                    Duration_Mins: parseInt(durEl.value || '30', 10),
+                    Power_KW: parseFloat(kwEl.value || '10'),
+                    Priority: prioEl.value || 'Low',
+                });
+            });
+            return rows;
+        }
+
+        let currentBacklog = [];
+
+        async function renderPlannerFromResponse(data, includeSchedule) {
+            const fc = data.forecast || [];
+            const baseLayout = {
+                margin: {t: 30, b: 40, l: 40, r: 10},
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                paper_bgcolor: 'rgba(0,0,0,0)'
+            };
+
+            const insightsEl = document.getElementById('ai-insights');
+
+            // Update planner KPIs from totals
+            const totals = data.totals || {};
+            const predSolarEl   = document.getElementById('kpi-pred-solar');
+            const predLoadEl    = document.getElementById('kpi-pred-load');
+            const freeEnergyEl  = document.getElementById('kpi-free-energy');
+            const fcDateEl      = document.getElementById('kpi-forecast-date');
+            if (predSolarEl)  predSolarEl.textContent  = Math.round(totals.solar || 0).toLocaleString();
+            if (predLoadEl)   predLoadEl.textContent   = Math.round(totals.load  || 0).toLocaleString();
+            if (freeEnergyEl) freeEnergyEl.textContent = Math.round(totals.free  || 0).toLocaleString();
+            if (fcDateEl)     fcDateEl.textContent     = data.date || plannerDate;
+
+            if (!fc.length) {
+                Plotly.newPlot('chart-forecast', [], {title: 'Forecast Error'});
+                if (includeSchedule) {
+                    Plotly.newPlot('chart-gantt', [], {
+                        ...baseLayout,
+                        title: 'No schedule generated',
+                        xaxis: {showgrid: false, showticklabels: false},
+                        yaxis: {showgrid: false, showticklabels: false}
+                    }, {displayModeBar: false});
+                    if (insightsEl) {
+                        insightsEl.classList.add('d-none');
+                    }
+                }
+                return;
+            }
+
+            const ts = fc.map(r => r.date);
+            const solar = fc.map(r => r.Pred_Solar || r.pred_solar || 0);
+            const load = fc.map(r => r.Likely_Load || r.likely_load || 0);
+            const free = fc.map(r => r.Available_Waste || r.available_waste || 0);
+
+            Plotly.newPlot('chart-forecast', [
+                {x: ts, y: solar, name: 'Predicted Solar', type: 'scatter', line: {color: '#FFC107', dash: 'dot'}},
+                {x: ts, y: load, name: 'Likely Load', type: 'scatter', line: {color: '#1B5E20'}},
+                {x: ts, y: free, name: 'Free Energy', type: 'scatter', fill: 'tozeroy', line: {color: '#66BB6A', width: 0}},
+            ], {
+                ...baseLayout,
+                xaxis: {type: 'date', tickformat: '%H:%M'}
+            }, {displayModeBar: false});
+
+            if (!includeSchedule) {
+                // For forecast-only calls, do not touch Gantt or insights.
+                return;
+            }
+
+            const ai = data.ai_result || {};
+            const sched = ai.Schedule || ai.schedule || [];
+
+            const insightsText = ai.Insights || ai.insights || '';
+
+            if (!sched.length) {
+                Plotly.newPlot('chart-gantt', [], {
+                    ...baseLayout,
+                    title: 'No AI schedule generated',
+                    xaxis: {showgrid: false, showticklabels: false},
+                    yaxis: {showgrid: false, showticklabels: false}
+                }, {displayModeBar: false});
+
+                if (insightsEl) {
+                    if (insightsText) {
+                        insightsEl.innerText = insightsText;
+                        insightsEl.classList.remove('d-none');
+                    } else {
+                        insightsEl.classList.add('d-none');
+                    }
+                }
+                return;
+            }
+
+            // ── Gantt rendering ────────────────────────────────────────────────
+            // Step 1: Group AI schedule rows by Task+Resource.
+            // Each unique (Task, Resource) pair gets ONE bar that spans from the
+            // earliest unit start to the latest unit end — this correctly captures
+            // sequential units (Qty 2 back-to-back = full 2× duration bar).
+            const groups = new Map();
+            sched.forEach((row) => {
+                // Normalise task name: use spaces, not underscores
+                const taskName = (row.Task || row.task || 'Job').replace(/_/g, ' ');
+                const resource = row.Resource || row.resource || '';
+                const priority = row.Priority || row.priority || 'Low';
+                const key      = `${taskName}||${resource}`;
+                const start    = new Date(row.Start || row.start);
+                const end      = new Date(row.End   || row.end);
+
+                if (!groups.has(key)) {
+                    groups.set(key, { taskName, resource, priority, start, end, count: 1 });
+                } else {
+                    const g = groups.get(key);
+                    if (start < g.start) g.start = start;
+                    if (end   > g.end)   g.end   = end;
+                    g.count += 1;
+                    // Promote to the highest priority seen for this task
+                    const rank = { High: 3, Med: 2, Medium: 2, Low: 1 };
+                    if ((rank[priority] || 1) > (rank[g.priority] || 1)) g.priority = priority;
+                }
+            });
+
+            // Step 2: Sort for display.
+            // Plotly categorical y-axis renders first item at BOTTOM, last at TOP.
+            // We want High priority at the TOP → sort ascending by priority rank
+            // (Low first = bottom, High last = top), ties broken by start time.
+            const prioRank = { High: 3, Med: 2, Medium: 2, Low: 1 };
+            const groupList = Array.from(groups.values()).sort((a, b) => {
+                const pa = prioRank[a.priority] || 1;
+                const pb = prioRank[b.priority] || 1;
+                if (pa !== pb) return pa - pb;   // Low → Med → High (High ends up at top)
+                return a.start - b.start;         // earlier start first within same priority
+            });
+
+            // Step 3: Build one horizontal bar trace per task row.
+            // Colour encodes priority: Red = High, Orange = Med, Green = Low.
+            const prioColors = { High: '#F44336', Med: '#FF9800', Medium: '#FF9800', Low: '#4CAF50' };
+            const ganttTraces = [];
+            groupList.forEach((g) => {
+                const countLabel = g.count > 1 ? ` (Qty ${g.count})` : '';
+                const resLabel   = g.resource ? ` – ${g.resource}` : '';
+                const prioTag    = `[${g.priority}] `;
+                const yLabel     = `${prioTag}${g.taskName}${countLabel}${resLabel}`;
+                const startMs    = g.start.getTime();
+                const durMs      = g.end.getTime() - startMs;
+                const durMin     = Math.round(durMs / 60000);
+                const barColor   = prioColors[g.priority] || '#2196F3';
+
+                ganttTraces.push({
+                    type: 'bar',
+                    orientation: 'h',
+                    x: [durMs],
+                    y: [yLabel],
+                    base: [startMs],
+                    marker: {
+                        color: barColor,
+                        line: { color: 'rgba(255,255,255,0.45)', width: 1 }
+                    },
+                    name: yLabel,
+                    hovertemplate:
+                        `<b>${g.taskName}${countLabel}${resLabel}</b><br>` +
+                        `Priority: <b>${g.priority}</b><br>` +
+                        `Start: ${g.start.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}<br>` +
+                        `End:   ${g.end.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}<br>` +
+                        `Duration: ${durMin} min<extra></extra>`,
+                    showlegend: false,
+                });
+            });
+
+            // Step 4: X-axis locked to solar window 09:00 – 16:00 on the forecast date.
+            const fDate  = data.date || plannerDate;
+            const xMin   = `${fDate}T09:00:00`;
+            const xMax   = `${fDate}T16:00:00`;
+            const ganttH = Math.max(260, groupList.length * 65 + 100);
+            const ganttEl = document.getElementById('chart-gantt');
+            if (ganttEl) ganttEl.style.height = ganttH + 'px';
+
+            Plotly.newPlot('chart-gantt', ganttTraces, {
+                ...baseLayout,
+                barmode: 'overlay',
+                height: ganttH,
+                xaxis: {
+                    type: 'date',
+                    range: [xMin, xMax],
+                    tickformat: '%H:%M',
+                    dtick: 3600000,
+                    title: 'Time of Day  ·  Solar Window 09:00 – 16:00',
+                    showgrid: true,
+                    gridcolor: 'rgba(0,0,0,0.07)',
+                },
+                yaxis: { title: '', automargin: true, tickfont: { size: 11 } },
+                margin: { t: 30, b: 60, l: 240, r: 20 },
+            }, {displayModeBar: false});
+
+            if (insightsEl) {
+                if (insightsText) {
+                    insightsEl.innerText = insightsText;
+                    insightsEl.classList.remove('d-none');
+                } else {
+                    insightsEl.classList.add('d-none');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Planner date from template
+            const plannerDateEl = document.getElementById('planner-date');
+            if (plannerDateEl) {
+                plannerDate = plannerDateEl.textContent.trim();
+            }
+
+            // Populate job type dropdown
+            const jobSelect = document.getElementById('job-type-select');
+            if (jobSelect && jobTypes.length) {
+                jobTypes.forEach(jt => {
+                    const opt = document.createElement('option');
+                    opt.value = jt;
+                    opt.textContent = jt.replace(/_/g, ' ');
+                    jobSelect.appendChild(opt);
+                });
+                jobSelect.value = jobTypes[0];
+            }
+
+            // Initial backlog from first job type
+            if (jobTypes.length) {
+                const jt = jobTypes[0];
+                const spec = jobSpecsByType[jt] || {};
+                currentBacklog.push({
+                    Job: jt,
+                    Qty: 1,
+                    Duration_Mins: parseInt(spec.Unit_Duration_Mins || '30', 10),
+                    Power_KW: parseFloat(spec.Unit_Power_KW || '10'),
+                    Priority: 'High',
+                });
+            }
+            renderBacklog(currentBacklog);
+
+            // Auto-load forecast chart (forecast only, no AI schedule)
+            (async () => {
+                try {
+                    const res = await axios.post('/api/planner', {
+                        date: plannerDate,
+                        backlog: currentBacklog,
+                        run_ai: false,
+                    });
+                    await renderPlannerFromResponse(res.data || {}, false);
+                } catch (err) {
+                    console.error('Initial planner forecast error', err);
+                }
+            })();
+
+            // Add job button
+            const btnAdd = document.getElementById('btn-add-row');
+            if (btnAdd) {
+                btnAdd.addEventListener('click', () => {
+                    const select = document.getElementById('job-type-select');
+                    if (select) {
+                        select.focus();
+                    }
+                    const jt = (select && select.value) || jobTypes[0];
+                    const spec = jobSpecsByType[jt] || {};
+                    currentBacklog.push({
+                        Job: jt,
+                        Qty: 1,
+                        Duration_Mins: parseInt(spec.Unit_Duration_Mins || '30', 10),
+                        Power_KW: parseFloat(spec.Unit_Power_KW || '10'),
+                        Priority: 'Med',
+                    });
+                    renderBacklog(currentBacklog);
+                });
+            }
+
+            // Run AI scheduler button
+            const btnRun = document.getElementById('btn-run-schedule');
+            if (btnRun) {
+                btnRun.addEventListener('click', async () => {
+                    currentBacklog = collectBacklog();
+                    try {
+                        const res = await axios.post('/api/planner', {
+                            date: plannerDate,
+                            backlog: currentBacklog,
+                            run_ai: true,
+                        });
+                        await renderPlannerFromResponse(res.data || {}, true);
+                    } catch (err) {
+                        console.error('Planner error', err);
+                    }
+                });
+            }
+
+            // Scroll to planner section instead of navigating away
+            const btnPlanner = document.getElementById('btn-open-planner');
+            if (btnPlanner) {
+                btnPlanner.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = document.getElementById('planner-section');
+                    if (section) {
+                        section.scrollIntoView({behavior: 'smooth'});
+                    }
+                });
+            }
+        });
+
+        updateClock();
+        setInterval(updateClock, 1000);
+        fetchDashboard();
+        setInterval(fetchDashboard, 15000);
+    </script>
+</body>
+</html>
+
